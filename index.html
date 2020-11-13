@@ -201,16 +201,38 @@
         </form>
       </div>
       <div class="user">
-        <a href="#" class="user-info">
-          <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
-          <span class="user-name">islamovartem</span>
-        </a>
-        <!-- /.user-info -->
-        <a href="#" class="exit">
-          <svg class="icon icon-exit">
-            <use xlink:href="img/icons.svg#exit"></use>
-          </svg>
-        </a>
+        <div class="user-container">
+          <a href="#" class="user-info">
+            <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
+            <span class="user-name">islamovartem</span>
+          </a>
+          <!-- /.user-info -->
+          <div class="user-bar">
+            <a href="#" class="edit edit-button">
+              <img class="icon icon-edit" src="img/edit.svg" alt="Редактировать">
+            </a>
+            <a href="#" class="exit exit-button">
+              <svg class="icon icon-exit">
+                <use xlink:href="img/icons.svg#exit"></use>
+              </svg>
+            </a>
+          </div>
+        </div><!-- /.user__inner -->
+        <div class="user-edit">
+          <h2 class="user-edit__title">Редактировать</h2>
+          <form class="edit-form">
+            <label class="edit-form__label">
+              <span>Никнейм:</span>
+              <input class="edit-form__input edit-username" type="text" name="edit-login" minlength="3">
+            </label>
+            <label class="edit-form__label">
+              <span>Аватар:</span>
+              <input class="edit-form__input edit-avatar" type="text" name="edit-avatar" placeholder="URL изображения">
+            </label>
+            <button class="edit-form__btn">Сохранить</button>
+          </form>
+        </div>
+        <!-- /.user__inner -->
         <!-- /.exit -->
       </div>
       <!-- /.user -->
