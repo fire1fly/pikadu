@@ -1,5 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyD40f2H44NltOHguyhhkNMuT4GgfuVRtxE",
+    authDomain: "pikazu-86a38.firebaseapp.com",
+    databaseURL: "https://pikazu-86a38.firebaseio.com",
+    projectId: "pikazu-86a38",
+    storageBucket: "pikazu-86a38.appspot.com",
+    messagingSenderId: "205422380916",
+    appId: "1:205422380916:web:5b19cabffc42ff6de50e21"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  console.log(firebase);
+
   // elems
 
   const menuToggle = document.querySelector('#menu-toggle'),
@@ -382,5 +396,9 @@ document.addEventListener("DOMContentLoaded", function() {
   init();
 
 });
+
+fetch('https://jsonplaceholder.typicode.com/todos/20')
+  .then(response => response.json())
+  .then(json => console.log(json))
 
 
