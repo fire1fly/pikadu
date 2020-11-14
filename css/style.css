@@ -1,3 +1,7 @@
+:root {
+  --theme-color: #3d98e2;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -9,7 +13,7 @@ body {
   background: #e5e5e5;
 }
 .header {
-  background: #fa8c16;
+  background: var(--theme-color);
   padding-top: 16px;
   padding-bottom: 16px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
@@ -71,6 +75,9 @@ body {
   align-items: center;
   justify-content: center;
 }
+.search-icon {
+  fill: var(--theme-color)
+}
 .search-input::-moz-placeholder {
   color: #bfbfbf;
 }
@@ -98,7 +105,11 @@ body {
   justify-content: space-between;
 }
 .posts {
+  display: none;
   width: 67%;
+}
+.posts.visible {
+  display: block;
 }
 .post {
   background-color: #fff;
@@ -123,6 +134,7 @@ body {
   font-weight: normal;
   font-size: 14px;
   line-height: 22px;
+  word-wrap: break-word;
 }
 .tags {
   margin-bottom: 22px;
@@ -169,10 +181,10 @@ body {
   transition: 0.3s;
 }
 .post-button:hover {
-  color: #fa8c16;
+  color: var(--theme-color);
 }
 .post-button:hover .icon {
-  fill: #fa8c16;
+  fill: var(--theme-color);
 }
 .post-author {
   display: flex;
@@ -180,10 +192,11 @@ body {
   text-align: right;
 }
 .author-avatar {
+  margin-left: 9px;
   width: 34px;
   height: 34px;
-  margin-left: 9px;
-  border-radius: 4px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .author-username {
   display: block;
@@ -203,7 +216,7 @@ body {
 }
 .login {
   border: 1px solid #e8e8e8;
-  padding: 15px 25px;
+  padding: 15px;
   background-color: #fafafa;
 }
 .login-title {
@@ -233,7 +246,7 @@ body {
 }
 .login-signin {
   border: none;
-  background-color: #fa8c16;
+  background-color: var(--theme-color);
   color: #fff;
   cursor: pointer;
   transition: 0.3s;
@@ -243,7 +256,7 @@ body {
 }
 .login-link {
   text-align: center;
-  color: #fa8c16;
+  color: var(--theme-color);
 }
 .login-forget {
   font-style: italic;
@@ -268,6 +281,7 @@ body {
 .user-avatar {
   border-radius: 50%;
   margin-right: 17px;
+  object-fit: cover;
 }
 .user-name {
   font-weight: 600;
@@ -322,7 +336,7 @@ body {
   height: 40px;
   border-radius: 4px;
   border: none;
-  background-color: #fa8c16;
+  background-color: var(--theme-color);
   color: #fff;
   cursor: pointer;
   transition: 0.3s;
@@ -371,14 +385,14 @@ body {
   background-color: #fff;
 }
 .sidebar-menu-link:hover {
-  background-color: #fff8d4;
+  background-color: #e7e7e7;
 }
 .sidebar-menu-link.active {
-  background-color: #fffbe6;
-  border-right: 3px solid #faad14;
+  background-color: #e7e7e7;
+  border-right: 3px solid var(--theme-color);
 }
 .button {
-  background: #faad14;
+  background: var(--theme-color);
   border-radius: 4px;
   border: none;
   text-decoration: none;
@@ -391,9 +405,9 @@ body {
 }
 .button-outline {
   background: #ffffff;
-  border: 1px solid #ffc53d;
+  border: 1px solid var(--theme-color);
   border-radius: 4px;
-  color: #ffc53d;
+  color: var(--theme-color);
   padding-left: 16px;
   padding-right: 16px;
   cursor: pointer;
@@ -401,7 +415,7 @@ body {
 .button-outline .icon {
   width: 14px;
   height: 11px;
-  fill: #ffc53d;
+  fill: var(--theme-color);
 }
 .button-new-post {
   display: none;
@@ -409,6 +423,9 @@ body {
   justify-content: center;
   width: 100%;
   margin-top: 20px;
+}
+.button-new-post.visible {
+  display: flex;
 }
 .icon-fire {
   fill: #fff;
@@ -442,7 +459,7 @@ body {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
-  color: #d48806;
+  color: var(--theme-color);
 }
 .card-text {
   font-size: 14px;
@@ -477,10 +494,14 @@ body {
   color: #ffffff;
 }
 .add-post {
-  display: flex;
+  display: none;
   flex-direction: column;
+  width: 67%;
 }
-.add-title,
+.add-post.visible {
+  display: flex;
+}
+.add__input,
 .add-text {
   background: #ffffff;
   border: 1px solid #e8e8e8;
@@ -488,9 +509,15 @@ body {
   margin-bottom: 16px;
 }
 .add-text {
+  margin-bottom: 5px;
   max-width: 100%;
   min-height: 362px;
   resize: none;
+}
+.add-text__label {
+  margin-bottom: 15px;
+  padding-left: 30px;
+  color: #757575;
 }
 .add-button {
   width: 100%;
@@ -545,7 +572,7 @@ body {
   .sidebar.visible {
     transform: translateX(0);
   }
-  .posts {
+  .posts, .add-post {
     width: 100%;
   }
   .header-nav {
