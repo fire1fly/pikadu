@@ -116,6 +116,10 @@ body {
   border: 1px solid #e8e8e8;
   margin-bottom: 30px;
 }
+.post.post-warning .post-title {
+  /* text-align: center; */
+  font-size: 18px;
+}
 .post-body {
   padding-top: 35px;
   padding-left: 35px;
