@@ -18,6 +18,25 @@
 </head>
 <body>
   <!-- Создаем шапку сайта -->
+  <div class="modal-wrapper">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-header__text">Уведомление</span>
+        <div class="modal-close">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <span class="modal-body__text"></span>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn _success">Ок</button>
+      </div>
+    </div>
+  </div>
+  <!-- /.modal -->
+
   <header class="header">
     <div class="header-wrapper">
       <a href="/" class="header-logo">
@@ -61,24 +80,27 @@
       </span>
       <input type="text" name="tags" class="add__input add-tags" placeholder="Добавьте тэги через запятую без решетки.">
       <div class="add-buttons">
-        <button type="submit" class="button add-button">
-          <svg class="icon icon-fire">
-            <use xlink:href="img/icons.svg#fire"></use>
-          </svg>
-          Опубликовать пост
-        </button>
-        <button class="button button-outline">
-          <svg class="icon icon-video">
-            <use xlink:href="img/icons.svg#video"></use>
-          </svg>
-          Видео
-        </button>
-        <button class="button button-outline">
-          <svg class="icon icon-photo">
-            <use xlink:href="img/icons.svg#photo"></use>
-          </svg>
-          Фото
-        </button>
+        <div class="add-buttons-bar">
+          <button type="submit" class="button add-button">
+            <svg class="icon icon-fire">
+              <use xlink:href="img/icons.svg#fire"></use>
+            </svg>
+            Опубликовать пост
+          </button>
+          <button type="button" class="button button-outline button-add-media">
+            <svg class="icon icon-video">
+              <use xlink:href="img/icons.svg#video"></use>
+            </svg>
+            Видео
+          </button>
+          <button type="button" class="button button-outline button-add-media">
+            <svg class="icon icon-photo">
+              <use xlink:href="img/icons.svg#photo"></use>
+            </svg>
+            Фото
+          </button>
+        </div>
+        <button type="button" class="button deny-post-button">Отмена</button>
       </div>
     </form>
     <main class="posts">
@@ -135,10 +157,10 @@
       <nav class="sidebar-nav">
         <ul class="sidebar-menu">
           <li class="sidebar-menu-item">
-            <a href="#" class="sidebar-menu-link">Ответы</a>
+            <a href="#feed" class="sidebar-menu-link active _exist-division posts-feed">Лента</a>
           </li>
           <li class="sidebar-menu-item">
-            <a href="#" class="sidebar-menu-link active">Комментарии</a>
+            <a href="#" class="sidebar-menu-link">Комментарии</a>
           </li>
           <li class="sidebar-menu-item">
             <a href="#" class="sidebar-menu-link">Оценки</a>

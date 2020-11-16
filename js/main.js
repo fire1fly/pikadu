@@ -16,6 +16,7 @@
 
   const menuToggle = document.querySelector('#menu-toggle'),
         menu = document.querySelector('.sidebar'),
+        modalElem = document.querySelector('.modal-wrapper'),
         loginElem = document.querySelector(".login"),
         userElem = document.querySelector(".user"),
         userAvatarElem = userElem.querySelector(".user-avatar"),
@@ -37,7 +38,14 @@
         postWarnElem = postsWrapper.querySelector(".post.post-warning"),
         addPostForm = document.querySelector(".add-post"),
         addTextPostInput = addPostForm.querySelector(".add-text"),
-        addTextSymbolCounter = addPostForm.querySelector(".add-text__counter");
+        addTextSymbolCounter = addPostForm.querySelector(".add-text__counter"),
+        btnsAttachMediaAddPost = addPostForm.querySelectorAll(".button-add-media"),
+        btnDenyAddPost = addPostForm.querySelector(".deny-post-button"),
+        sidebarMenuItems = document.querySelectorAll(".sidebar-menu-link"),
+        linkFeedPostsSidebar = document.querySelector(".posts-feed");
+
+
+  let tagsElems;  
 
   // data
 
@@ -82,11 +90,11 @@
       .catch(err => {
         const errCode = err.code;
         if (errCode === "auth/wrong-password") {
-          alert("Неверный пароль.");
+          openModalDom("Неверный пароль.");
         } else if (errCode === "auth/user-not-found") {
-          alert('Пользователь не найден.');
+          openModalDom('Пользователь не найден.');
         } else {
-          alert('Упс, возникла ошибка: ', err);
+          openModalDom('Упс, возникла ошибка: ', err);
         }
         console.log(err);
       });
@@ -104,10 +112,9 @@
 
     },
     signUp(email, pass, handler) {
-      console.log('signUp');
 
       if(!REGEXP_MAIL_VALID.test(email)) {
-        alert("Невалидное поле email. \n Логин почты не может содержать спец.символы");
+        openModalDom("Невалидное поле email. \n Логин почты не может содержать спец.символы.");
         return;
       }
 
@@ -126,18 +133,18 @@
                 errMsg = error.message;
 
           if (errCode === 'auth/weak-password') {
-            alert("Пароль не может содержать меньше 6 символов.")
+            openModalDom("Пароль не может содержать меньше 6 символов.")
           } else if (errCode === 'auth/email-already-in-use') {
-            alert("Этот email уже используется.");
+            openModalDom("Этот email уже используется.");
           } else {
-            alert(errMsg);
+            openModalDom(errMsg);
           }
 
           console.log(error);
         });
 
       } else {
-        alert("Вы не ввели пароль");
+        openModalDom("Введите пароль.");
       }
     },
     editUser(displayName, photoURL = '', handler, flag = '') {
@@ -146,7 +153,7 @@
 
       if (displayName) {
         if ((displayName.length < 2 || displayName.length > 11 ) && !flag) {
-          alert("Недопустимая длина имени. Имя пользователя может содержать от 2 до 11 символов.");
+          openModalDom("Недопустимая длина имени. Имя пользователя может содержать от 2 до 11 символов.");
           return false;
         }
         if (photoURL) {
@@ -173,13 +180,13 @@
     resetPass(email) {
 
       if(!email) {
-        alert("Введите email.");
+        openModalDom("Введите email.");
         return;
       }
 
       firebase.auth().sendPasswordResetEmail(email)
         .then(() => {
-          alert('Письмо отправлено');
+          openModalDom('Письмо отправлено на ваш email.');
         })
         .catch(err => {
           console.log(err);
@@ -226,15 +233,64 @@
           showWarnMsg();
         }
       });
+
+      setInterval(() => {
+        tagsElems = postsWrapper.querySelectorAll(".tag"); 
+        
+        tagsElems.forEach(tag => {
+          let tagText = tag.textContent.slice(1, tag.textContent.length);
+          tag.addEventListener("click", event => {
+    
+            event.preventDefault();
+    
+            setPosts.filterPosts(tagText, showAllPosts);
+    
+          });
+        });
+      }, 1000);
     },
-    filterPosts(filter) {
-      this.posts.filter(post => {
+    filterPosts(filter, handler) {
+      const posts = [];
+      this.posts.forEach(post => {
         post.tags.forEach(tag => {
-          if (tag === filter)
-            return post;
+          if (tag === filter) {
+            posts.unshift(post);
+          }
         });
       });
+
+      this.posts = posts;
+      
+      if (handler) {
+        handler();
+      }
     }
+  }
+
+  const closeModalDom = event => {
+
+    if (modalElem.classList.contains("visible")) {
+      const closeBtnModal = event.target.closest(".modal-close"),
+          sucessBtnModal = event.target.closest(".modal-btn._success");
+
+      if (closeBtnModal || sucessBtnModal || 
+          event.key === 'Escape' || event.key === 'Enter') {
+        modalElem.classList.remove("visible");
+        document.body.style.overflow = 'auto';
+      }
+
+    }
+
+  }
+
+  const openModalDom = msg => {
+
+    const modalBodyText = modalElem.querySelector(".modal-body__text");
+
+    modalBodyText.textContent = msg;
+    modalElem.classList.add("visible");
+    document.body.style.overflow = 'hidden';
+
   }
 
   const toggleAuthDom = () => {
@@ -345,6 +401,9 @@
       menu.classList.toggle('visible');
   
     });
+
+    modalElem.addEventListener("click", closeModalDom);
+    window.addEventListener("keyup", closeModalDom);
   
     loginForm.addEventListener("submit", event => {
   
@@ -423,12 +482,12 @@
       console.log(title, text, tags);
 
       if (title.value.length < 3) {
-        alert("Заголовок поста не может быть меньше 3 символов");
+        openModalDom("Заголовок поста не может быть меньше 3 символов.");
         return;
       }
 
       if (text.value.length < 3 || text.value.length > 1600) {
-        alert("Длина поста не может быть меньше 3 и не больше 1600 символов");
+        openModalDom("Длина поста не может быть меньше 3 и не больше 1600 символов.");
         return;
       }
 
@@ -442,15 +501,44 @@
 
     });
 
+    sidebarMenuItems.forEach(elem => {
+      if (!elem.classList.contains("_exist-division")) {
+        elem.addEventListener("click", event => {
+
+          event.preventDefault();
+
+          openModalDom("Этот раздел пока что недоступен.");
+
+        })
+      }
+    });
+    
+    linkFeedPostsSidebar.addEventListener("click", event => {
+
+      event.preventDefault();
+
+      setPosts.getPosts(showAllPosts);
+
+    })
+
+    btnDenyAddPost.addEventListener("click", () => {
+      setPosts.getPosts(showAllPosts);
+    });
+
+    btnsAttachMediaAddPost.forEach(elem => {
+      elem.addEventListener("click", () => {
+        openModalDom("Добавление медиа контента пока что недоступно.");
+      });
+    });
+    
     addTextPostInput.addEventListener("input", event => {
       addTextSymbolCounter.textContent = addTextPostInput.value.length;
     });
 
-
     setUsers.initUser(toggleAuthDom);
 
     setPosts.getPosts(showAllPosts);
-  
+
     toggleAuthDom();
 
   }
